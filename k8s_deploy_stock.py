@@ -77,11 +77,11 @@ async def deploy_stock_agent_to_k8s():
                 },
                 "initialDelaySeconds": 30,
                 "periodSeconds": 10
-            }
+            },
+            "image_pull_secrets": ["regcred"],  # Secrets for pulling images from private registry
         },
         "platform": "linux/amd64",
         "push_to_registry": True,  # Push image to registry
-        "image_pull_secrets": ["regcred"],  # Secrets for pulling images from private registry
     }
     
     print("📦 Building and pushing container image...")
