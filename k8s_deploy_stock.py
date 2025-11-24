@@ -4,6 +4,7 @@ Deploy to K8s cluster with auto-scaling support
 """
 import asyncio
 import os
+import subprocess
 from agentscope_runtime.engine.deployers.kubernetes_deployer import (
     KubernetesDeployManager,
     RegistryConfig,
@@ -24,7 +25,7 @@ async def deploy_stock_agent_to_k8s():
             kubeconfig_path=None,  # Uses default ~/.kube/config
         ),
         registry_config=RegistryConfig(
-            registry_url=os.getenv("DOCKER_REGISTRY", "your-registry-url"),
+            registry_url=os.getenv("your-registry-url"),
             namespace="agentscope-runtime",
         ),
         use_deployment=True,  # Use K8s Deployment instead of Job
@@ -35,7 +36,7 @@ async def deploy_stock_agent_to_k8s():
         "port": "8080",
         "replicas": 2,  # Start with 2 replicas for HA
         "image_name": "stock-agent",
-        "image_tag": "v1.0",
+        "image_tag": subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode("utf-8").strip(),
         "requirements": [
             "agentscope",
             "agentscope-runtime",
@@ -80,6 +81,7 @@ async def deploy_stock_agent_to_k8s():
         },
         "platform": "linux/amd64",
         "push_to_registry": True,  # Push image to registry
+        "image_pull_secrets": ["regcred"],  # Secrets for pulling images from private registry
     }
     
     print("📦 Building and pushing container image...")
