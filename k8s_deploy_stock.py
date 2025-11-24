@@ -6,8 +6,7 @@ import asyncio
 import os
 import subprocess
 import sys
-# Add local agentscope-runtime to path to ensure we use the patched version
-sys.path.insert(0, os.path.join(os.getcwd(), "agentscope-runtime", "src"))
+
 
 from agentscope_runtime.engine.deployers.kubernetes_deployer import (
     KubernetesDeployManager,
@@ -32,7 +31,7 @@ async def deploy_stock_agent_to_k8s():
         ),
         registry_config=RegistryConfig(
             registry_url=os.getenv("your-registry-url"),
-            namespace="agentscope-runtime",
+            namespace=os.getenv("")
         ),
         use_deployment=True,  # Use K8s Deployment instead of Job
     )
