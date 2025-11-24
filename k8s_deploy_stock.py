@@ -30,8 +30,8 @@ async def deploy_stock_agent_to_k8s():
             kubeconfig_path=None,  # Uses default ~/.kube/config
         ),
         registry_config=RegistryConfig(
-            registry_url=os.getenv("your-registry-url"),
-            namespace=os.getenv("")
+            registry_url=os.getenv("REGISTRY_URL"),
+            namespace=os.getenv("REGISTRY_NAMESPACE")
         ),
         use_deployment=True,  # Use K8s Deployment instead of Job
     )
