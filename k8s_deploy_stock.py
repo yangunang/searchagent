@@ -5,11 +5,17 @@ Deploy to K8s cluster with auto-scaling support
 import asyncio
 import os
 import subprocess
+import sys
+# Add local agentscope-runtime to path to ensure we use the patched version
+sys.path.insert(0, os.path.join(os.getcwd(), "agentscope-runtime", "src"))
+
 from agentscope_runtime.engine.deployers.kubernetes_deployer import (
     KubernetesDeployManager,
     RegistryConfig,
     K8sConfig,
 )
+import agentscope_runtime
+print(f"🔍 Loaded agentscope_runtime from: {agentscope_runtime.__file__}")
 from stock_agent_app import app
 
 
